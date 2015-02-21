@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+#script to test module
+
+make
+if [ "$?" != "0" ]
+then
+	echo "make failed"
+	exit 1
+else
+	echo "make completed,hit return"
+fi
+
+read v
+sudo insmod ./modules/lkm.ko num_dev=1
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo mknod /dev/scratch_node c 251 0
+read v
+ls -la /dev/sc*
+read v
+
+gcc -o app app.c
+if [ "$?" != "0" ]
+then
+	echo "app compilation failed"
+	exit 1
+else
+	echo "app compilation succeeded"
+fi
+
+gcc -o app_ascii app_ascii.c
+if [ "$?" != "0" ]
+then
+	echo "app_ascii compilation failed"
+	exit 1
+else
+	echo "app_ascii compilation succeeded"
+fi
+
+#sudo ./app /dev/scratch_node > app_log &
+sudo ./app_ascii /dev/scratch_node > app_ascii_log &
+read v
+
+echo "hit return to remove module"
+read v
+sudo rmmod lkm
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo unlink /dev/scratch_node
+echo "Module operations successful!!"
+make clean
+echo "file cleanup done."

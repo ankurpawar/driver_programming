@@ -1,0 +1,134 @@
+#!/bin/bash
+#
+#script to checkin files in rcs
+
+checkin() 
+{
+	ci header.h
+	ci declarations.h
+	ci file_opr.h
+	ci init.c
+	ci cleanup.c
+	ci open_dev.c
+	ci close_dev.c
+	ci application.c
+	ci trim_dev.c
+	ci write_dev.c
+	ci create_scull.c
+	ci read_dev.c
+	ci llseek_dev.c
+	ci scull_follow.c
+	ci application2.c
+	return 0
+}
+
+checkout() 
+{
+	co header.h
+	co declarations.h
+	co file_opr.h
+	co init.c
+	co cleanup.c
+	co open_dev.c
+	co close_dev.c
+	co application.c
+	co trim_dev.c
+	co write_dev.c
+	co create_scull.c
+	co read_dev.c
+	co llseek_dev.c
+	co scull_follow.c
+	co application2.c
+	return 0
+}
+
+remove_files()
+{
+	rm -f header.h
+	rm -f declarations.h
+	rm -f file_opr.h
+	rm -f init.c
+	rm -f cleanup.c
+	rm -f open_dev.c
+	rm -f close_dev.c
+	rm -f application.c
+	rm -f trim_dev.c
+	rm -f write_dev.c
+	rm -f create_scull.c
+	rm -f read_dev.c
+	rm -f llseek_dev.c
+	rm -f scull_follow.c
+	rm -f application2.c
+	make clean
+	return 0
+}
+
+checkin
+echo "checkin done."
+
+checkout
+echo "checkout readonly done."
+
+make
+if [ "$?" != "0" ]
+then
+	echo "make failed"
+	remove_files
+	echo "checkout files to correct errors"
+	exit 1
+else
+	echo "make completed,hit return"
+fi
+
+read v
+sudo insmod ./modules/lkm.ko num_dev=16
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo mknod /dev/scratch_node c 251 0
+read v
+ls -la /dev/sc*
+read v
+
+gcc -o application application.c
+if [ "$?" != "0" ]
+then
+	echo "application compilation failed"
+	remove_files
+	echo "checkout files to correct errors"
+	exit 1
+else
+	echo "application compilation succeeded,hit return"
+fi
+
+gcc -o application2 application2.c
+if [ "$?" != "0" ]
+then
+	echo "application2 compilation failed"
+	remove_files
+	echo "checkout files to correct errors"
+	exit 1
+else
+	echo "application2 compilation succeeded,hit return"
+fi
+
+sudo ./application /dev/scratch_node > app_log &
+sudo ./application2 /dev/scratch_node > app2_log
+read v
+
+echo "hit return to remove module"
+read v
+sudo rmmod lkm
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo unlink /dev/scratch_node
+echo "Module operations successful!!"
+remove_files
+echo "file cleanup done."

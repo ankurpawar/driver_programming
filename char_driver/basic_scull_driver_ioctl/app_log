@@ -1,0 +1,7 @@
+Application open fd=3
+qunatum_size = 8 
+qunatum_size = 16 ret=0
+number of byte wrtitten 108Application open fd=3
+new pos 0
+number of byte read 108,string=hello to the world of linux kernel device driver.This is my first kernel driver.Hope everything will be fine
+Application close fd

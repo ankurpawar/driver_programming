@@ -1,0 +1,62 @@
+#!/bin/bash
+#
+#script to test module
+
+make
+if [ "$?" != "0" ]
+then
+	echo "make failed"
+	exit 1
+else
+	echo "make completed,hit return"
+fi
+
+read v
+sudo insmod ./modules/lkm.ko num_dev=4
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo mknod /dev/scratch_pipe c 251 0
+read v
+ls -la /dev/sc*
+read v
+
+gcc -o writer writer.c
+if [ "$?" != "0" ]
+then
+	echo "writer compilation failed"
+	exit 1
+else
+	echo "writer compilation succeeded"
+fi
+
+gcc -o reader reader.c
+if [ "$?" != "0" ]
+then
+	echo "reader compilation failed"
+	exit 1
+else
+	echo "reader compilation succeeded"
+fi
+
+#echo "run reader and writer in separate tabs,hit return to remove module"
+sudo ./reader /dev/scratch_pipe > reader_log & 
+sudo ./writer /dev/scratch_pipe > writer_log
+#read v
+
+echo "hit return to remove module"
+read v
+sudo rmmod lkm
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo unlink /dev/scratch_pipe
+echo "Module operations successful!!"
+make clean
+echo "file cleanup done."

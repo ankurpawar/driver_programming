@@ -1,0 +1,10 @@
+#ifndef IOCTL_DEV
+#define IOCTL_DEV
+
+#define SCULL_IOC_MAGIC 'k'
+#define SCULL_IOCSQUANTUM _IOW(SCULL_IOC_MAGIC,  1, int)
+#define SCULL_IOCSQSET    _IOW(SCULL_IOC_MAGIC,  2, int)
+#define SCULL_IOCGQUANTUM _IOR(SCULL_IOC_MAGIC,  5, int)
+#define SCULL_IOC_MAXNR 14
+
+#endif 

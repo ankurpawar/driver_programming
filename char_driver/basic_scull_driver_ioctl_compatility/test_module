@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+#script to test module
+make
+if [ "$?" != "0" ]
+then
+	echo "make failed"
+	exit 1
+else
+	echo "make completed,hit return"
+fi
+
+read v
+sudo insmod ./modules/lkm.ko num_dev=16
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo mknod /dev/scratch_node c 251 0
+read v
+ls -la /dev/sc*
+read v
+
+gcc -o application application.c
+if [ "$?" != "0" ]
+then
+	echo "application compilation failed"
+	exit 1
+else
+	echo "application compilation succeeded,hit return"
+fi
+
+echo "run application2 separately and hit return to run application"
+read v
+sudo ./application /dev/scratch_node > app_log
+echo "hit return to remove module"
+read v
+sudo rmmod lkm
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo unlink /dev/scratch_node
+echo "Module operations successful!!"
+make clean
+echo "file cleanup done."

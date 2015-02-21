@@ -1,0 +1,5 @@
+Application open fd=3
+number of byte wrtitten 118Application open fd=3
+new pos 50
+number of byte read 58,string=his is my first kernel driver.Hope everything will be fine
+Application close fd

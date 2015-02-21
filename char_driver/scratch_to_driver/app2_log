@@ -1,0 +1,4 @@
+Application open fd=3
+number of byte wrtitten 68number of byte wrtitten 49new pos 0
+number of byte read 20,string=this is another proc
+Application close fd

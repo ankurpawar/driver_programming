@@ -1,0 +1,5 @@
+Application open fd=3
+number of byte wrtitten 108Application open fd=3
+new pos 0
+number of byte read 118,string=This is aplication 2 trying to write in the scull along with application 1.Which of the two application would succeed?
+Application close fd

@@ -1,0 +1,13 @@
+run checkin_files script then
+it will stop and show a message 
+"start app_writer first then start app_reader in separate window"
+"hit return to remove module"
+
+open a new tab or window and start reader app
+sudo ./app_reader /dev/scartch_node
+as the scull is empty read_dev will stop on wait_for_completion() when write_dev executes completion()
+read_dev starts reading.
+
+open a new tab or window and start writer app
+sudo ./app_writer /dev/scartch_node
+

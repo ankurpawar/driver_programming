@@ -1,0 +1,4 @@
+Application open fd=3
+number of byte wrtitten 108number of byte wrtitten 39new pos 0
+number of byte read 90,string=this is another process trying to write on the scull.Will it succeedrnel driver.Hope every
+Application close fd
