@@ -1,0 +1,4 @@
+Simple hello world kernel module
+
+insmod lkm.ko
+rmmod lkm

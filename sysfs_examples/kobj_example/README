@@ -1,0 +1,12 @@
+Simple hello world kernel module
+
+Using insmod
+step 1: $make
+step 2: $insmod lkm.ko
+step 3: $rmmod lkm
+
+Using modprobe
+step 1: $make
+step 3: $depmod -a
+step 4: $sudo modprobe lkm
+step 5: $sudo modprobe -r lkm
