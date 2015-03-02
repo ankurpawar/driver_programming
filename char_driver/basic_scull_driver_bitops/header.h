@@ -14,6 +14,7 @@
 #include<linux/proc_fs.h>
 #include<linux/seq_file.h>
 #include<linux/ioctl.h>
+#include<linux/bitops.h>
 
 #ifndef DEBUG
 #define DEBUG
