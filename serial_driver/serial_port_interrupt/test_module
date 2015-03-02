@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+#script to test module 
+
+make
+if [ "$?" != "0" ]
+then
+	echo "make failed"
+	exit 1
+else
+	echo "make completed,hit return"
+fi
+
+depmod -a
+read v
+sudo modprobe lkm
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo mknod /dev/scratch_node c 251 0
+read v
+ls -la /dev/sc*
+read v
+
+gcc -o app_reader app_reader.c
+if [ "$?" != "0" ]
+then
+	echo "app_reader compilation failed"
+	exit 1
+else
+	echo "app_reader compilation succeeded,hit return"
+fi
+
+sudo ./app_reader /dev/scratch_node
+read v
+
+echo "run script reader and writer in different"
+echo "computer or hit return to remove module"
+read v
+sudo modprobe -r lkm
+dmesg
+read v
+
+cat /proc/devices
+read v
+
+sudo unlink /dev/scratch_node
+echo "Module operations successful!!"
+make clean
+echo "file cleanup done."
