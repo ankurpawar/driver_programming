@@ -4,15 +4,11 @@
 int open_dev(struct inode *inodep, struct file *filep)
 {
 	struct ScullDev *lsculldev;
+	int ret;
+	unsigned char out_byte = 0;
 	#ifdef DEBUG
 	printk(KERN_INFO "START: %s \n",__func__);
 	#endif
-	lsculldev = (struct ScullDev*)&sculldev[0];
-	if(!sculldev) {
-		printk(KERN_ERR "sculldev not allocated");
-		goto ERR;
-	}
-	
 	lsculldev = container_of(inodep->i_cdev, struct ScullDev, c_dev);
 	if (!lsculldev) {
 		printk(KERN_ERR "container of failed\n");
@@ -28,7 +24,18 @@ int open_dev(struct inode *inodep, struct file *filep)
 		printk(KERN_ERR "error in creating scull\n");
 		goto SEM_UP;
 	}
+		
+	ret = request_irq(irq, ser_interrupt, IRQF_SHARED, DEV_NAME, lsculldev);
+	if (ret < 0) {
+		printk(KERN_ERR "error in request_irq ret = %d\n", ret);
+		goto SEM_UP;
+	}
+
+	/*enable receive interrupt*/
+	out_byte |= ERBFI;
+	outb(out_byte, IER);
 	up(&lsculldev->sem);
+	
 	#ifdef DEBUG
 	printk(KERN_INFO "END: %s \n",__func__);
 	#endif

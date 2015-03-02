@@ -8,12 +8,14 @@
 #include<linux/slab.h>
 #include<linux/cdev.h>
 #include<linux/moduleparam.h>
-#include<linux/stat.h>
 #include<linux/uaccess.h>
-#include<linux/semaphore.h>
+#include<linux/stat.h>
 #include<linux/ioport.h>
-#include<linux/bitops.h>
 #include<linux/delay.h>
+#include<linux/interrupt.h>
+#include<linux/wait.h>
+#include<linux/sched.h>
+#include<asm/signal.h>
 
 #ifndef DEBUG
 #define DEBUG
@@ -29,6 +31,7 @@
 #define DATA_SIZE	0
 #define DEVICE_SIZE	8
 
+#define IRQ_NUM		4
 #define	NUM_REGS	8
 #define	PORT_ADDRESS	0x3f8
 #define RBR		PORT_ADDRESS+0
@@ -54,4 +57,6 @@
 #define THRE		0x20
 #define TEMT		0x40
 
+#define ERBFI		0x01
+#define ETBEI		0x02
 #endif

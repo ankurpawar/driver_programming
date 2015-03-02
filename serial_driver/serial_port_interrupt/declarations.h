@@ -10,6 +10,7 @@ struct ScullDev
 	int device_size;
 	int data_size;
 	struct semaphore sem;
+	wait_queue_head_t dev_wait_q;
 };
 
 struct ScullQset
@@ -31,16 +32,20 @@ extern struct file_operations fops;
 extern unsigned long port_address;
 extern int num_regs;
 extern struct resource *par_port;
+extern int irq;
+extern struct tasklet_struct tasklet;
 
 int open_dev(struct inode *,struct file *);
 int close_dev(struct inode *,struct file *);
 int trim_dev(struct ScullDev *);
 ssize_t write_dev(struct file *,const char __user *,size_t count,loff_t *);
 ssize_t read_dev(struct file *,char __user *,size_t count,loff_t *);
-loff_t llseek_dev(struct file *,loff_t,int);
 struct ScullQset *create_scull(int count);
 struct ScullQset *create_scullqset(int count);
 int create_qset(int count,struct ScullQset*);
 int create_quantums(int count,struct ScullQset*);
 struct ScullQset *scull_follow(struct ScullQset *,int);
+irqreturn_t ser_interrupt(int irq, void *dev_id);
+void ser_tasklet(unsigned long data);
+
 #endif

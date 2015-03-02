@@ -2,13 +2,14 @@ INSTALL_DIR=modules
 ifneq (${KERNELRELEASE},)
 	obj-m := lkm.o
 
-lkm-objs := init.o cleanup.o open_dev.o close_dev.o write_dev.o create_scull.o read_dev.o
+lkm-objs := init.o cleanup.o open_dev.o close_dev.o write_dev.o create_scull.o read_dev.o ser_interrupt.o
 
 else
 	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 	PWD := $(shell pwd)
 default:
 	$(MAKE)  -C $(KERNELDIR) M=$(PWD) modules
+	$(MAKE)  -C $(KERNELDIR) M=$(PWD) modules_install
 	@rm -rf ${INSTALL_DIR}
 	@mkdir ${INSTALL_DIR}
 	@mv -f *.o *.ko *.mod.c .*.cmd ${INSTALL_DIR}

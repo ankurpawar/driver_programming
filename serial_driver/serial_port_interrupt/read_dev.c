@@ -28,14 +28,13 @@ ssize_t read_dev(struct file *filep,char __user *buf,size_t count,loff_t *fpos)
 		goto ERR;
 	}
 
-	do {
-		inbyte = inb(LSR);
-		udelay(1);
-	} while ((inbyte & DR) != DR);
+	wait_event_interruptible(lsculldev->dev_wait_q, lsculldev->data_size > 0);
+	memcpy(&inbyte, lscullqset->data[0], sizeof(char));
+	#ifdef DEBUG
+	printk(KERN_INFO "data read=%d,%c\n", inbyte, inbyte);
+	#endif
 
-	inbyte = inb(RBR);
-	/*write data to port*/
-	memcpy(lscullqset->data[0], &inbyte, sizeof(char));
+	/*copy data to user space*/
 	ret = copy_to_user(buf, lscullqset->data[0], sizeof(char));
 	if (ret > 0) {
 		#ifdef DEBUG
