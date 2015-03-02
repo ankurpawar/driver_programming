@@ -61,6 +61,6 @@
 #define MSR_DSR 		0x20
 
 #define MCR_DTR			0x10
-#define MCR_RTS			0x20
+#define MCR_RTS			0x02
 
 #endif

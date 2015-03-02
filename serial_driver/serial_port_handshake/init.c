@@ -16,7 +16,7 @@ struct ScullDev *sculldev;
 struct resource *par_port;
 int num_regs;
 
-module_param(num_dev,uint,S_IRUGO);
+
 
 struct file_operations fops=
 {
@@ -36,6 +36,7 @@ void init_default(void)
 	num_regs = NUM_REGS;
 	data_size = DATA_SIZE;
 	device_size = DEVICE_SIZE;
+	num_dev = NOD;
 }
 
 static int __init initialization(void)
