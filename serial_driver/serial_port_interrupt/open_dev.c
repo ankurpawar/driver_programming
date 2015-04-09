@@ -24,8 +24,8 @@ int open_dev(struct inode *inodep, struct file *filep)
 		printk(KERN_ERR "error in creating scull\n");
 		goto SEM_UP;
 	}
-		
-	ret = request_irq(irq, ser_interrupt, IRQF_SHARED, DEV_NAME, lsculldev);
+	/*IRQF_SHARED not working*/	
+	ret = request_irq(irq, ser_interrupt, 0, DEV_NAME, lsculldev);
 	if (ret < 0) {
 		printk(KERN_ERR "error in request_irq ret = %d\n", ret);
 		goto SEM_UP;
