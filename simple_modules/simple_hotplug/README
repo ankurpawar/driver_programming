@@ -1,0 +1,5 @@
+Simple hello world kernel module with hotplugging.
+
+
+insmod lkm.ko
+rmmod lkm
