@@ -25,4 +25,5 @@ clean:
 	-rm -rf modules
 	-rm modules.order
 	-rm Module.symvers
+	-rm -rf .tmp_versions
 endif
