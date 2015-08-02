@@ -5,7 +5,6 @@ int open_dev(struct inode *inodep,struct file *filep)
 {
 	struct ScullDev *lsculldev;
 	int ret;
-	unsigned char byte;
 	#ifdef DEBUG
 	printk(KERN_INFO "START: %s \n",__func__);
 	#endif

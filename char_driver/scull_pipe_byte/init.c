@@ -1,7 +1,5 @@
 #include"header.h"
 #include"declarations.h"
-#include"file_opr.h"
-
 
 int major_num;
 unsigned int minor_num;
@@ -12,6 +10,14 @@ struct ScullPipe *scullpipe;
 int max_pipe_size;
 
 module_param(num_dev,uint,S_IRUGO);
+
+struct file_operations fops = {
+        .owner = THIS_MODULE,
+	.open = open_pipe,
+        .release = close_pipe,
+        .write = write_pipe,
+        .read = read_pipe,
+};
 
 void init_default(void)
 {

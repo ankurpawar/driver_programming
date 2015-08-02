@@ -14,28 +14,11 @@
 #include<linux/sched.h>
 #include<linux/wait.h>
 
-#ifndef DEBUG
 #define DEBUG
-#endif
-
-#ifndef MAJOR_NUM
 #define MAJOR_NUM 0
-#endif
-
-#ifndef MINOR_NUM
 #define MINOR_NUM 0
-#endif
-
-#ifndef DEV_NAME
 #define DEV_NAME "scull_pipe"
-#endif
-
-#ifndef NOD
 #define NOD 1
-#endif
-
-#ifndef MAX_BUFFER_SIZE
 #define MAX_BUFFER_SIZE 4096
-#endif
 
 #endif

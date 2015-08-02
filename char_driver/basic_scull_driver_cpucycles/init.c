@@ -1,6 +1,5 @@
 #include"header.h"
 #include"declarations.h"
-#include"file_opr.h"
 
 
 int major_num;
@@ -15,6 +14,15 @@ dev_t new_dev;
 struct ScullDev *sculldev;
 
 module_param(num_dev,uint,S_IRUGO);
+
+struct file_operations fops = {
+	.owner = THIS_MODULE,
+        .open = open_dev,
+        .release = close_dev,
+        .write = write_dev,
+        .read = read_dev,
+        .llseek = llseek_dev,
+};
 
 void init_default(void)
 {
