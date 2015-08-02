@@ -10,16 +10,14 @@ static void __exit cleanup_func(void)
 	#endif
 
 	for (i = 0;i < num_dev ;i++) {
-		trim_dev(&sculldev[i]);	
-		cdev_del(&sculldev[i].c_dev);
+		cdev_del(&par_dev[i].c_dev);
 	}
 	release_region(port_address,3);
-	kfree(sculldev);
+	kfree(par_dev);
 	unregister_chrdev_region(dev,num_dev);
 
 	#ifdef DEBUG
 	printk(KERN_INFO "END: %s \n",__func__);
 	#endif
-} 
-
+}
 module_exit(cleanup_func);

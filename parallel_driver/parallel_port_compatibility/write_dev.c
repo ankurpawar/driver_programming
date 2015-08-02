@@ -3,8 +3,7 @@
 
 ssize_t write_dev(struct file *filep,const char __user *buf,size_t count,loff_t *f_pos)
 {
-	struct ScullDev *lsculldev;
-	struct ScullQset *lscullqset = NULL;
+	struct parallel_dev *localdev;
 	unsigned char inbyte = 0;
 	unsigned char outbyte = 0;
 	int ret, bytes_wrtn = 0;
@@ -12,8 +11,8 @@ ssize_t write_dev(struct file *filep,const char __user *buf,size_t count,loff_t 
 	printk(KERN_INFO "START: %s \n",__func__);
 	#endif
 
-	lsculldev = filep->private_data;
-	if (!lsculldev) {
+	localdev = filep->private_data;
+	if (!localdev) {
 		printk(KERN_ERR "device not found\n");
 		return -1;
 	}
@@ -23,20 +22,13 @@ ssize_t write_dev(struct file *filep,const char __user *buf,size_t count,loff_t 
 		goto ERR;
 	}
 
-	lscullqset = lsculldev->qset;
-	if (!lsculldev->qset) {
-		printk(KERN_ERR "error scull not found\n");
-		goto ERR;
-	}
-	
 	/*write data to port*/
-	ret = copy_from_user(lscullqset->data[0], buf, sizeof(char));
+	ret = copy_from_user(&outbyte, buf, sizeof(char));
 	if (ret > 0) {
 		#ifdef DEBUG
 		printk(KERN_INFO "partial write ret=%d\n",ret);
 		#endif
 	}
-	memcpy(&outbyte,lscullqset->data[0],sizeof(char));
 	#ifdef DEBUG
 	printk(KERN_INFO "data to port =  %c \n",outbyte);
 	#endif 

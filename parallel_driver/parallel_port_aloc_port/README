@@ -1,2 +1,4 @@
 # parallel_port_aloc_port
 Device driver code for parallel port.Code for allocation of parallel port.
+This driver has no read routine. Developed only for testing parallel port
+using led connected to the port.

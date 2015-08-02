@@ -3,39 +3,26 @@
 
 int open_dev(struct inode *inodep,struct file *filep)
 {
-	struct ScullDev *lsculldev;
+	struct parallel_dev *localdev;
 	int ret;
 	#ifdef DEBUG
 	printk(KERN_INFO "START: %s \n",__func__);
 	#endif
-	lsculldev = (struct ScullDev*)&sculldev[0];
-	if(!sculldev) {
-		printk(KERN_ERR "sculldev not allocated");
-		goto ERR;
-	}
-	
-	lsculldev = container_of(inodep->i_cdev,struct ScullDev,c_dev);
-	if (!lsculldev) {
+	localdev = container_of(inodep->i_cdev,struct parallel_dev,c_dev);
+	if (!localdev) {
 		printk(KERN_ERR "container of failed\n");
 		goto ERR;	
 	}
 	
-	filep->private_data = lsculldev;
+	filep->private_data = localdev;
 	if((filep->f_flags & O_ACCMODE) == O_WRONLY) {
 		#ifdef DEBUG
 		printk(KERN_INFO "device write mode\n");
 		#endif
-		if(down_interruptible(&lsculldev->sem))
+		if(down_interruptible(&localdev->sem))
 			return -ERESTARTSYS;
 
-		ret = trim_dev(lsculldev);
-		if(ret < 0) {
-			#ifdef DEBUG
-			printk(KERN_ERR "device trim failed!\n");
-			#endif
-			goto SEM_UP;
-		}
-		up(&lsculldev->sem);
+		up(&localdev->sem);
 	}
 	#ifdef DEBUG
 	printk(KERN_INFO "END: %s \n",__func__);
@@ -43,7 +30,7 @@ int open_dev(struct inode *inodep,struct file *filep)
 	
 	return 0;
 SEM_UP:
-	up(&lsculldev->sem);
+	up(&localdev->sem);
 ERR:
 	return -1;
 }
