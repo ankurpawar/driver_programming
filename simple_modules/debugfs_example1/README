@@ -1,0 +1,20 @@
+A linux kernel module using debugfs api to create an entry in the
+/sys/kernel/debug with name a_rookie. There is a file created inside
+this directory with name filetxt. Whenever this file is read Hello world
+is returned. app.c is application code to write the file if "Hello world" 
+then 11 is returned otherwise -1.
+
+to build module
+make
+
+to load module
+sudo insmod lkm.ko
+
+to unload module
+sudo rmmor lkm.ko
+
+to read debugfs file
+sudo cat /sys/kernel/debug/a_rookie/filetxt
+
+to write in the debugfs file
+sudo ./app
