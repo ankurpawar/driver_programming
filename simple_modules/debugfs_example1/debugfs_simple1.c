@@ -79,7 +79,7 @@ module_init(dev_init);
 static void __exit dev_exit(void)
 {
 	debugfs_remove_recursive(debug_dir);
-	pr_debug("good bye world from a misc\n");
+	pr_debug("good bye world from a rookie\n");
 }
 
 module_exit(dev_exit);
