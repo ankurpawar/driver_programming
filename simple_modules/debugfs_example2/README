@@ -1,0 +1,23 @@
+A linux kernel module using debugfs api to create an entry in the
+/sys/kernel/debug with name a_funky. There are two files created inside
+this directory with name txtfile and u8file. Whenever txtfile is read 
+"Hello again"string is returned. When u8file is read a unsigned char value
+is returned . This value is incremented every time by the module when txtfile
+fiel is read. app.c is application code to write the file if "Hello again" 
+then 11 is returned otherwise -1.
+
+to build module
+make
+
+to load module
+sudo insmod lkm.ko
+
+to unload module
+sudo rmmor lkm.ko
+
+to read debugfs file
+sudo cat /sys/kernel/debug/a_funky/txtfile
+sudo cat /sys/kernel/debug/a_funky/u8file
+
+to write in the debugfs txtfile
+sudo ./app
