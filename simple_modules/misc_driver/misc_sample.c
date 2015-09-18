@@ -3,61 +3,69 @@
 #include<linux/init.h>
 #include<linux/fs.h>
 #include<linux/miscdevice.h>
+#include<linux/string.h>
+#include<linux/uaccess.h>
 
-static struct miscdevice my_dev;
+#define MAGIC_NUM "196"
+#define MAX_LEN 32
 
+static int id_len;
 
-ssize_t misc_write(struct file *filep,const char __user *buf,size_t count,loff_t *f_pos)
+ssize_t misc_write(struct file *filep, const char __user *ubuf, size_t count,
+		   loff_t *f_pos)
 {
-	return 0;
+	int ret = 0;
+	char buff[MAX_LEN] = { 0 };
+
+	ret = simple_write_to_buffer(buff, MAX_LEN, f_pos, ubuf, count);
+	if (ret < 0)
+		return ret;
+	if (strcmp(buff, MAGIC_NUM))
+		ret = -EINVAL;
+	return ret;
 }
 
-ssize_t misc_read(struct file *filep,char __user *buf,size_t count,loff_t *fpos)
+ssize_t misc_read(struct file *filep, char __user *buf, size_t count,
+		  loff_t *fpos)
 {
-	return 0;
+	return simple_read_from_buffer(buf, count, fpos, MAGIC_NUM, id_len);
 }
 
-int misc_open(struct inode *inodep, struct file *filep)
-{
-	return 0;
-}
-
-int misc_close(struct inode *inodep,struct file *filep)
-{
-	return 0;
-}
-
-static struct file_operations my_fops = {
+static const struct file_operations my_fops = {
 	.owner = THIS_MODULE,
-	.open = misc_open,
-	.release = misc_close,
 	.read = misc_read,
 	.write = misc_write,
+};
+
+static struct miscdevice my_dev = {
+	.minor = MISC_DYNAMIC_MINOR,
+	.name = "misc_drv",
+	.fops = &my_fops,
 };
 
 static int __init misc_init(void)
 {
 	int retval = 0;
-	my_dev.minor = MISC_DYNAMIC_MINOR;
-	my_dev.name = "my_misc";
-	my_dev.fops = &my_fops;
-	printk(KERN_INFO "hello world module from a misc\n");
-	
+	id_len = strlen(MAGIC_NUM);
+	pr_debug("hello world module from a misc\n");
+
 	retval = misc_register(&my_dev);
 	if (retval)
-		printk("error in misc registration\n");
+		pr_debug("error in misc registration\n");
 	return retval;
 }
+
 module_init(misc_init);
 
 static void __exit misc_exit(void)
 {
 	int retval = 0;
-        printk(KERN_INFO "good bye world from a misc\n");
+	pr_debug("good bye world from a misc\n");
 	retval = misc_deregister(&my_dev);
 	if (retval)
-		printk("error in deregister\n");
+		pr_debug("error in deregister\n");
 }
+
 module_exit(misc_exit);
 
 MODULE_LICENSE("GPL");

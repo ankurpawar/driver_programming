@@ -1,4 +1,4 @@
-INSTALL_DIR=modules
+CFLAGS_misc_sample.o := -DDEBUG
 ifneq (${KERNELRELEASE},)
 	obj-m := lkm.o
 
