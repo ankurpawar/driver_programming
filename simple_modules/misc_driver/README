@@ -1,0 +1,31 @@
+A linux kernel module to make a misc driver. It is simple module that creates
+a character node and perform file operations on it. 
+
+misc_sample.c : misc driver c code  
+app.c : application code to test write routine of the driver
+Makefile : contains rules to build the module 
+
+
+To build this module type make command
+~$ make 
+
+To load the module 
+~$ insmod lkm.ko
+
+To unload the module
+~$ rmmod lkm
+
+To build the application code
+~$ make app
+
+To test the read routine of module.This will read the misc_drv device node and 
+output 196
+~$ cat /dev/misc_drv
+
+
+To test the write routine of driver. App code write 196 in the device node and
+return 3. If anything other than 196 is written it return -1.
+~$ ./app
+
+To clean the binaries
+~$ make clean
