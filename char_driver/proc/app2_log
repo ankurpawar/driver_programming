@@ -1,5 +1,5 @@
 Application open fd=3
 number of byte wrtitten 118Application open fd=3
 new pos 50
-number of byte read 68,string=along with application 1.Which of the two application would succeed?
+number of byte read 58,string=his is my first kernel driver.Hope everything will be fine
 Application close fd

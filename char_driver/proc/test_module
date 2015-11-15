@@ -24,26 +24,26 @@ read v
 ls -la /dev/sc*
 read v
 
-gcc -o application application.c
+gcc -o app1 app1.c
 if [ "$?" != "0" ]
 then
-	echo "application compilation failed"
+	echo "app1 compilation failed"
 	exit 1
 else
-	echo "application compilation succeeded,hit return"
+	echo "app1 compilation succeeded,hit return"
 fi
 
-gcc -o application2 application2.c
+gcc -o app2 app2.c
 if [ "$?" != "0" ]
 then
-	echo "application2 compilation failed"
+	echo "app2 compilation failed"
 	exit 1
 else
-	echo "application2 compilation succeeded,hit return"
+	echo "app2 compilation succeeded,hit return"
 fi
 
-sudo ./application /dev/scratch_node > app_log &
-sudo ./application2 /dev/scratch_node > app2_log
+sudo ./app1 /dev/scratch_node > app1_log &
+sudo ./app2 /dev/scratch_node > app2_log
 read v
 
 echo "hit return to remove module"
