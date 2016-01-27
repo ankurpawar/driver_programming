@@ -1,68 +1,9 @@
 #!/bin/bash
 #
-#script to checkin files in rcs
-
-checkin() 
-{
-	ci header.h
-	ci declarations.h
-	ci init.c
-	ci cleanup.c
-	ci open_dev.c
-	ci close_dev.c
-	ci write_dev.c
-	ci create_scull.c
-	ci read_dev.c
-	ci app_reader.c
-	ci app_writer.c
-	return 0
-}
-
-checkout() 
-{
-	co header.h
-	co declarations.h
-	co init.c
-	co cleanup.c
-	co open_dev.c
-	co close_dev.c
-	co write_dev.c
-	co create_scull.c
-	co read_dev.c
-	co app_reader.c
-	co app_writer.c
-	return 0
-}
-
-remove_files()
-{
-	rm -f header.h
-	rm -f declarations.h
-	rm -f init.c
-	rm -f cleanup.c
-	rm -f open_dev.c
-	rm -f close_dev.c
-	rm -f write_dev.c
-	rm -f create_scull.c
-	rm -f read_dev.c
-	rm -f app_reader.c
-	rm -f app_writer.c
-	make clean
-	return 0
-}
-
-checkin
-echo "checkin done."
-
-checkout
-echo "checkout readonly done."
-
 make
 if [ "$?" != "0" ]
 then
 	echo "make failed"
-	remove_files
-	echo "checkout files to correct errors"
 	exit 1
 else
 	echo "make completed,hit return"
@@ -85,8 +26,6 @@ gcc -o app_writer app_writer.c
 if [ "$?" != "0" ]
 then
 	echo "app_writer compilation failed"
-	remove_files
-	echo "checkout files to correct errors"
 	exit 1
 else
 	echo "app_writer compilation succeeded"
@@ -109,5 +48,3 @@ read v
 
 sudo unlink /dev/scratch_node
 echo "Module operations successful!!"
-remove_files
-echo "file cleanup done."
