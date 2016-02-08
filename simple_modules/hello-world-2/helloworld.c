@@ -1,12 +1,21 @@
-#include"header.h"
+#include<linux/kernel.h>
+#include<linux/module.h>
+#include<linux/init.h>
+
+MODULE_ALIAS("lkm");
+MODULE_DESCRIPTION("simple hello world");
+MODULE_AUTHOR("Ankur");
+MODULE_LICENSE("GPL");
 
 static int __init initialization(void)
 {
 	printk(KERN_INFO "hello world module\n");
 	return 0;
 }
-
 module_init(initialization);
-MODULE_ALIAS("lkm");
-MODULE_DESCRIPTION("simple hello world");
-MODULE_AUTHOR("Ankur");
+
+static void __exit cleanup(void)
+{
+	printk(KERN_INFO "good bye world\n");
+}
+module_exit(cleanup); 

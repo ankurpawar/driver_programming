@@ -2,7 +2,7 @@ INSTALL_DIR=modules
 ifneq (${KERNELRELEASE},)
 	obj-m := lkm.o
 
-lkm-objs := init.o cleanup.o
+lkm-objs := helloworld.o
 
 else
 	KERNELRELEASE ?= /lib/modules/$(shell uname -r)/extra
@@ -10,6 +10,7 @@ else
 	PWD := $(shell pwd)
 default:
 	$(MAKE)  -C $(KERNELDIR) M=$(PWD) modules
+install:
 	$(MAKE)  -C $(KERNELDIR) M=$(PWD) modules_install
 clean:
 	-rm -f *.o *.ko *.mod.c .*.cmd

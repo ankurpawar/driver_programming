@@ -1,5 +1,5 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef SERIAL_H
+#define SERIAL_H
 
 #include<linux/module.h>
 #include<linux/kernel.h>
@@ -15,19 +15,12 @@
 #include<linux/bitops.h>
 #include<linux/delay.h>
 
-#ifndef DEBUG
 #define DEBUG
-#endif
 
 #define MAJOR_NUM	0
 #define MINOR_NUM	0
 #define DEV_NAME	"my_driver"
 #define NOD		1
-
-#define QSET_SIZE	3
-#define QUANTUM_SIZE	1
-#define DATA_SIZE	0
-#define DEVICE_SIZE	8
 
 #define	NUM_REGS	8
 #define	PORT_ADDRESS	0x3f8

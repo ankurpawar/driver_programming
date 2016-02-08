@@ -1,15 +1,18 @@
-#include"header.h"
-#include"declarations.h"
+#include "serial.h"
 
 #define TX_FLAGS (THRE|TEMT)
+
+struct serial_dev
+{
+        struct cdev c_dev;
+        struct semaphore sem;
+};
 
 int major_num;
 unsigned int minor_num;
 unsigned int num_dev;
 dev_t dev;
 dev_t new_dev;
-int data_size;
-int device_size;
 unsigned long port_address;
 struct serial_dev *serialdev;
 struct resource *serial_port;
@@ -17,6 +20,11 @@ int num_regs;
 
 module_param(num_dev,uint,S_IRUGO);
 MODULE_LICENSE("GPL");
+
+int open_dev(struct inode *,struct file *);
+int close_dev(struct inode *,struct file *);
+ssize_t write_dev(struct file *,const char __user *,size_t count,loff_t *);
+ssize_t read_dev(struct file *,char __user *,size_t count,loff_t *);
 
 struct file_operations fops=
 {
@@ -32,8 +40,6 @@ void init_default(void)
 	minor_num = MINOR_NUM;
 	port_address = PORT_ADDRESS;
 	num_regs = NUM_REGS;
-	data_size = DATA_SIZE;
-	device_size = DEVICE_SIZE;
 }
 
 static int __init initialization(void)
