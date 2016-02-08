@@ -1,5 +1,5 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef PARALLEL_DRV_H
+#define PARALLEL_DRV_H
 
 #include<linux/module.h>
 #include<linux/kernel.h>

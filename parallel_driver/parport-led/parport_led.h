@@ -1,5 +1,5 @@
-#ifndef HEADER_H
-#define HEADER_H
+#ifndef PARPORT_LED_H
+#define PARPORT_LED_H
 
 #include<linux/module.h>
 #include<linux/kernel.h>
@@ -13,7 +13,6 @@
 #include<linux/semaphore.h>
 #include<linux/ioport.h>
 #include<linux/bitops.h>
-#include<linux/delay.h>
 
 #define DEBUG
 #define MAJOR_NUM 0
